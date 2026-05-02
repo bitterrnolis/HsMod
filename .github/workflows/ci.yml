@@ -29,9 +29,15 @@ jobs:
     # Build the project
     - name: Build HsMod
       run: dotnet build --configuration Release --no-restore
-# 【新增步骤】上传编译好的文件供下载
+# Build the project
+    - name: Build HsMod
+      # 加了 -o ./BuildOutput 参数，强制把编译好的文件全部塞进这个名叫 BuildOutput 的文件夹里
+      run: dotnet build --configuration Release --no-restore -o ./BuildOutput
+      
+    # 上传编译好的文件供下载
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: HsMod-Release-Build  # 这是最终生成压缩包的名字，你可以随便改
-        path: ./**/bin/Release/    # 抓取所有 bin/Release 文件夹下的产物
+        name: HsMod-Release-Build
+        # 直接去刚才指定的那个文件夹里打包上传
+        path: ./BuildOutput/
